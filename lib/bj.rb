@@ -1,3 +1,11 @@
+require "bj/version"
+
+#Standard gem stuff... we'll see if we need it.
+# module Bj
+#   # Your code goes here...
+# end
+
+
 unless defined? Bj 
   class Bj 
   #

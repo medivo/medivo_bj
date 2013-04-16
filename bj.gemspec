@@ -6,10 +6,10 @@ require 'bj/version'
 Gem::Specification.new do |spec|
   spec.name          = "bj"
   spec.version       = Bj::VERSION
-  spec.authors       = ["Daniel Berlinger"]
-  spec.email         = ["daniel@circumtech.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.authors       = ["Medivo Dev"]
+  spec.email         = ["developers@medivo.com"]
+  spec.description   = %q{We're porting an old version of BJ so that we don't have to switch a bunch of features in an older app.}
+  spec.summary       = %q{Run stuff in the background...}
   spec.homepage      = ""
   spec.license       = "MIT"
 
