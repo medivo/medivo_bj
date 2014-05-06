@@ -40,14 +40,6 @@ class Hash
       reject { |key,| !allowed.include?(key) }
     end
   end
-
-  begin
-    method "slice!"
-  rescue
-    def slice!(*keys)
-      replace(slice(*keys))
-    end
-  end
 end
 
 class Object
