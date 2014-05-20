@@ -242,7 +242,7 @@ class Bj
           transaction do
             options.to_options!
             hostname = options[:hostname] || Bj.hostname
-            record = find :first, :conditions => conditions(:key => key, :hostname => hostname) 
+            record = where(conditions key: key, hostname: hostname).first
             record ? record.value : default_for(key) 
           end
         end
@@ -256,7 +256,7 @@ class Bj
         end
 
         def default_for key
-          record = find :first, :conditions => conditions(:key => key, :hostname => '*')
+          record = where(conditions key: key, hostname: "*").first
           record ? record.value : nil 
         end
 
@@ -268,7 +268,7 @@ class Bj
           transaction do
             options.to_options!
             hostname = options[:hostname] || Bj.hostname
-            record = find :first, :conditions => conditions(:key => key, :hostname => hostname), :lock => true
+            record = where(conditions key: key, hostname: hostname).lock.first
             cast = options[:cast] || cast_for(value)
             key = key.to_s
             value = value.to_s
@@ -285,7 +285,7 @@ class Bj
 
         def delete key
           transaction do
-            record = find :first, :conditions => conditions(:key => key), :lock => true
+            record = where(conditions key: key).lock.first
             if record
               record.destroy
               record
@@ -296,22 +296,22 @@ class Bj
         end
 
         def has_key? key
-          record = find :first, :conditions => conditions(:key => key)
+          record = where(conditions key: key).first
           record ? record : false
         end
         alias_method "has_key", "has_key?"
 
         def keys
-          find(:all, :conditions => conditions).map(&:key)
+          where(conditions).map(&:key)
         end
 
         def values
-          find(:all, :conditions => conditions).map(&:value)
+          where(conditions).map(&:value)
         end
 
         def for options = {}
           oh = OrderedHash.new
-          find(:all, :conditions => conditions(options)).each do |record|
+          where(conditions options).each do |record|
             oh[record.key] = record.value
           end
           oh
