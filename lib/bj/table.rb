@@ -133,7 +133,7 @@ class Bj
           transaction do
             jobs.each do |job|
               job = create_hash_for(job.reverse_merge(submit_defaults))
-              job = create! job 
+              job = create! job, without_protection: true
               returned << (block ? block.call(job) : job)
             end
           end
