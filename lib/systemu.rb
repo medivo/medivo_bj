@@ -200,7 +200,7 @@ class SystemUniversal
     if src.respond_to? 'read'
       while((buf = src.read(8192))); dst << buf; end
     else
-      src.each{|buf| dst << buf}
+      src.each_line{|buf| dst << buf}
     end
   end
 
@@ -234,10 +234,10 @@ class SystemUniversal
   def getopts opts = {}
     lambda do |*args|
       keys, default, ignored = args
-      catch('opt') do
+      catch :opt do
         [keys].flatten.each do |key|
           [key, key.to_s, key.to_s.intern].each do |key|
-            throw 'opt', opts[key] if opts.has_key?(key)
+            throw :opt, opts[key] if opts.has_key?(key)
           end
         end
         default
