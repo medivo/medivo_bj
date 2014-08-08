@@ -275,9 +275,9 @@ class Bj
             if record
               record["value"] = value
               record["cast"] = cast
-              record.save! :without_protection => true
+              record.save!
             else
-              create!({:hostname => hostname, :key => key, :value => value, :cast => cast}, :without_protection => true)
+              create! :hostname => hostname, :key => key, :value => value, :cast => cast
             end
             value
           end
