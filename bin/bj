@@ -59,9 +59,9 @@ Main {
 
     All Bj's tables are namespaced and accessible via the Bj module:
 
-      Bj.table.job.find(:all)         # jobs table
-      Bj.table.job_archive.find(:all) # archived jobs
-      Bj.table.config.find(:all)      # configuration and runner state
+      Bj.table.job.all         # jobs table
+      Bj.table.job_archive.all # archived jobs
+      Bj.table.config.all      # configuration and runner state
 
     Bj always arranges for submitted jobs to run with a current working directory
     of RAILS_ROOT and with the correct RAILS_ENV setting.  For example, if you
@@ -445,7 +445,7 @@ txt
   mode "list" do
     def run
       Bj.transaction do
-        y Bj::Table::Job.find(:all).map(&:to_hash)
+        y Bj::Table::Job.all.map(&:to_hash)
       end
     end
   end

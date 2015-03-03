@@ -185,11 +185,12 @@ class Bj
               Bj.transaction(options) do
                 now = Time.now.utc
 
-                job = Bj::Table::Job.find :first,
-                                          :conditions => ["state = ? and submitted_at <= ? and (runner IS NULL or runner = ?)", "pending", now, Bj.hostname],
-                                          :order => "priority DESC, submitted_at ASC", 
-                                          :limit => 1,
-                                          :lock => true
+                job = Bj::Table::Job.where(["state = ? and submitted_at <= ? and (runner IS NULL or runner = ?)", "pending", now, Bj.hostname]).
+                  order("priority DESC, submitted_at ASC").
+                  limit(1).
+                  lock(true).
+                  first
+
                 throw :no_jobs unless job
 
 
@@ -288,8 +289,7 @@ class Bj
       def fill_morgue
         Bj.transaction do
           now = Time.now.utc
-          jobs = Bj::Table::Job.find :all,
-                                     :conditions => ["state = 'running' and runner = ?", Bj.hostname]
+          jobs = Bj::Table::Job.where(["state = 'running' and runner = ?", Bj.hostname]).all
           jobs.each do |job|
             if job.is_restartable?
               Bj.logger.info{ "#{ job.title } - found dead and bloated but resubmitted" }
@@ -311,8 +311,7 @@ class Bj
         Bj.transaction do
           now = Time.now.utc
           too_old = now - Bj.ttl
-          jobs = Bj::Table::Job.find :all,
-                                     :conditions => ["(state = 'finished' or state = 'dead') and submitted_at < ?", too_old]
+          jobs = Bj::Table::Job.where(["(state = 'finished' or state = 'dead') and submitted_at < ?", too_old]).all
           jobs.each do |job|
             Bj.logger.info{ "#{ job.title } - archived" }
             hash = job.to_hash.update(:archived_at => now)

@@ -5,7 +5,7 @@ class Bj
 #
 # eg.
 #
-#   Bj.table.job.find :all
+#   Bj.table.job.all
 #
   module API
   #
@@ -91,7 +91,7 @@ class Bj
       options.to_options!
       Bj.transaction(options) do
         options.delete :rails_env
-        table.job.find(:all, options)
+        table.job.all(options)
       end
     end
   #
